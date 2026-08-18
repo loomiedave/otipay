@@ -1,5 +1,5 @@
 "use client";
-import { ChevronsDown, Github, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import React from "react";
 import {
   Sheet,
@@ -35,17 +35,18 @@ interface FeatureProps {
 
 const routeList: RouteProps[] = [
   {
-    href: "#testimonials",
-    label: "Testimonials",
+    href: "#benefits",
+    label: "Why OtiPay",
   },
   {
-    href: "#team",
-    label: "Team",
+    href: "#rates",
+    label: "Live Rates",
   },
   {
-    href: "#contact",
-    label: "Contact",
+    href: "#info",
+    label: "Info",
   },
+
   {
     href: "#faq",
     label: "FAQ",
@@ -54,18 +55,16 @@ const routeList: RouteProps[] = [
 
 const featureList: FeatureProps[] = [
   {
-    title: "Showcase Your Value ",
-    description: "Highlight how your product solves user problems.",
+    title: "Send in Minutes",
+    description: "Transfers reach mobile money or bank accounts fast.",
   },
   {
-    title: "Build Trust",
-    description:
-      "Leverages social proof elements to establish trust and credibility.",
+    title: "Transparent Fees",
+    description: "See the exact rate and fee before you send, every time.",
   },
   {
-    title: "Capture Leads",
-    description:
-      "Make your lead capture form visually appealing and strategically.",
+    title: "Licensed & Secure",
+    description: "Regulated money transmitter with encrypted transfers.",
   },
 ];
 
@@ -73,9 +72,15 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
-      <Link href="/" className="font-bold text-lg flex items-center">
-        <ChevronsDown className="bg-gradient-to-tr border-secondary from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white" />
-        Shadcn
+      <Link href="/" className="font-bold text-lg flex items-center gap-2">
+        <Image
+          src="/otipay-logo.png"
+          alt="OtiPay logo"
+          width={44}
+          height={44}
+          className="rounded-lg"
+        />
+        OTPay
       </Link>
       {/* <!-- Mobile --> */}
       <div className="flex items-center lg:hidden">
@@ -94,9 +99,15 @@ export const Navbar = () => {
             <div>
               <SheetHeader className="mb-4 ml-4">
                 <SheetTitle className="flex items-center">
-                  <Link href="/" className="flex items-center">
-                    <ChevronsDown className="bg-gradient-to-tr border-secondary from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white" />
-                    Shadcn
+                  <Link href="/" className="font-bold text-lg flex items-center gap-2">
+                    <Image
+                      src="/otipay-logo.png"
+                      alt="OtiPay logo"
+                      width={44}
+                      height={44}
+                      className="rounded-lg"
+                    />
+                    OTPay
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -113,6 +124,13 @@ export const Navbar = () => {
                     <Link href={href}>{label}</Link>
                   </Button>
                 ))}
+                <Button
+                  onClick={() => setIsOpen(false)}
+                  asChild
+                  className="justify-start text-base font-semibold mt-2"
+                >
+                  <Link href="#download">Download the app</Link>
+                </Button>
               </div>
             </div>
 
@@ -130,17 +148,18 @@ export const Navbar = () => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuTrigger className="bg-card text-base">
-              Features
+              Why OtiPay
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="grid w-[600px] grid-cols-2 gap-5 p-4">
-                <Image
-                  src="https://avatars.githubusercontent.com/u/75042455?v=4"
-                  alt="RadixLogo"
-                  className="h-full w-full rounded-md object-cover"
-                  width={600}
-                  height={600}
-                />
+                <div className="relative h-full w-full rounded-md overflow-hidden">
+                  <Image
+                    src="/lady.jpg"
+                    alt="OtiPay logo"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <ul className="flex flex-col gap-2">
                   {featureList.map(({ title, description }) => (
                     <li
@@ -161,7 +180,7 @@ export const Navbar = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            {routeList.map(({ href, label }) => (
+            {routeList.slice(1).map(({ href, label }) => (
               <NavigationMenuLink key={href} asChild>
                 <Link href={href} className="text-base px-2">
                   {label}
@@ -172,18 +191,12 @@ export const Navbar = () => {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <div className="hidden lg:flex">
+      <div className="hidden lg:flex items-center gap-3">
         <ToggleTheme />
-
-        <Button asChild size="sm" variant="ghost" aria-label="View on GitHub">
-          <Link
-            aria-label="View on GitHub"
-            href="https://github.com/nobruf/shadcn-landing-page.git"
-            target="_blank"
-          >
-            <Github className="size-5" />
-          </Link>
+        <Button asChild className="font-semibold" size="sm">
+          <Link href="#download">Download</Link>
         </Button>
+
       </div>
     </header>
   );

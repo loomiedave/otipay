@@ -1,52 +1,29 @@
 "use client";
-
 import { Icon } from "@/components/ui/icon";
 import { Marquee } from "@devnomic/marquee";
 import "@devnomic/marquee/dist/index.css";
 import { icons } from "lucide-react";
+
 interface sponsorsProps {
   icon: string;
   name: string;
 }
 
 const sponsors: sponsorsProps[] = [
-  {
-    icon: "Crown",
-    name: "Acmebrand",
-  },
-  {
-    icon: "Vegan",
-    name: "Acmelogo",
-  },
-  {
-    icon: "Ghost",
-    name: "Acmesponsor",
-  },
-  {
-    icon: "Puzzle",
-    name: "Acmeipsum",
-  },
-  {
-    icon: "Squirrel",
-    name: "Acme",
-  },
-  {
-    icon: "Cookie",
-    name: "Accmee",
-  },
-  {
-    icon: "Drama",
-    name: "Acmetech",
-  },
+  { icon: "Smartphone", name: "MTN Mobile Money" },
+  { icon: "Wallet", name: "Moov Money" },
+  { icon: "Landmark", name: "Bank Transfer" },
+  { icon: "CreditCard", name: "Visa" },
+  { icon: "CreditCard", name: "Mastercard" },
+  { icon: "ShieldCheck", name: "Licensed Money Transmitter" },
 ];
 
 export const SponsorsSection = () => {
   return (
     <section id="sponsors" className="max-w-[75%] mx-auto pb-24 sm:pb-32">
       <h2 className="text-lg md:text-xl text-center mb-6">
-        Our Platinum Sponsors
+        Send and Receive However You Prefer
       </h2>
-
       <div className="mx-auto">
         <Marquee
           className="gap-[3rem]"
@@ -62,7 +39,7 @@ export const SponsorsSection = () => {
               <Icon
                 name={icon as keyof typeof icons}
                 size={32}
-                color="white"
+                color="hsl(var(--primary))"
                 className="mr-2"
               />
               {name}

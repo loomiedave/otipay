@@ -18,7 +18,7 @@
 - [x] Team
 - [x] Community
 - [x] Contact
-- [x] Pricing
+- [x] L
 - [x] Frequently Asked Questions(FAQ)
 - [x] Services
 - [x] Footer
