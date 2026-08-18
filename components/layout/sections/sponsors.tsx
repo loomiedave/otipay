@@ -1,15 +1,14 @@
 "use client";
+
 import { Icon } from "@/components/ui/icon";
-import { Marquee } from "@devnomic/marquee";
-import "@devnomic/marquee/dist/index.css";
 import { icons } from "lucide-react";
 
-interface sponsorsProps {
+interface SponsorsProps {
   icon: string;
   name: string;
 }
 
-const sponsors: sponsorsProps[] = [
+const sponsors: SponsorsProps[] = [
   { icon: "Smartphone", name: "MTN Mobile Money" },
   { icon: "Wallet", name: "Moov Money" },
   { icon: "Landmark", name: "Bank Transfer" },
@@ -24,28 +23,28 @@ export const SponsorsSection = () => {
       <h2 className="text-lg md:text-xl text-center mb-6">
         Send and Receive However You Prefer
       </h2>
-      <div className="mx-auto">
-        <Marquee
-          className="gap-[3rem]"
-          fade
-          innerClassName="gap-[3rem]"
-          pauseOnHover
-        >
-          {sponsors.map(({ icon, name }) => (
+
+      <div className="relative overflow-hidden">
+        {/* Edge fade */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent" />
+
+        <div className="flex w-max animate-sponsors-marquee hover:[animation-play-state:paused]">
+          {[...sponsors, ...sponsors].map(({ icon, name }, index) => (
             <div
-              key={name}
-              className="flex items-center text-xl md:text-2xl font-medium"
+              key={`${name}-${index}`}
+              className="flex items-center text-xl md:text-2xl font-medium mr-[3rem]"
             >
               <Icon
                 name={icon as keyof typeof icons}
                 size={32}
                 color="hsl(var(--primary))"
-                className="mr-2"
+                className="mr-2 shrink-0"
               />
               {name}
             </div>
           ))}
-        </Marquee>
+        </div>
       </div>
     </section>
   );

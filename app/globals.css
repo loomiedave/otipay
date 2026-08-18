@@ -68,3 +68,17 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes sponsors-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-sponsors-marquee {
+  animation: sponsors-marquee 25s linear infinite;
+}
