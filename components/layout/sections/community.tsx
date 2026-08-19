@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export const CommunitySection = () => {
+export default function CommunitySection (){
   return (
     <section id="community" className="py-12 ">
       <hr className="border-secondary" />

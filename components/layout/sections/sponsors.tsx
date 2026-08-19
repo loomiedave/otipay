@@ -17,7 +17,7 @@ const sponsors: SponsorsProps[] = [
   { icon: "ShieldCheck", name: "Licensed Money Transmitter" },
 ];
 
-export const SponsorsSection = () => {
+export default function SponsorsSection () {
   return (
     <section id="sponsors" className="max-w-[75%] mx-auto pb-24 sm:pb-32">
       <h2 className="text-lg md:text-xl text-center mb-6">

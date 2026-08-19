@@ -17,7 +17,7 @@ const corridor = [
   { code: "GH", city: "Lagos" },
 ];
 
-export const HeroSection = () => {
+export default function HeroSection (){
   return (
     <section className="relative overflow-hidden">
       <div className="container relative grid gap-16 py-20 md:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">

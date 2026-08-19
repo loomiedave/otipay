@@ -22,13 +22,13 @@ const featureList: FeaturesProps[] = [
       "Watch your transfer move in real time, from sent to confirmed in the recipient's account.",
   },
   {
-    icon: "History",
+    icon: "RotateCcwClock",
     title: "Full Transaction History",
     description:
       "Every transfer, rate, and fee logged and searchable — download statements anytime.",
   },
   {
-    icon: "Fingerprint",
+    icon: "FingerprintPattern",
     title: "Biometric Security",
     description:
       "Face ID and fingerprint login keep your account locked down without slowing you down.",
@@ -47,7 +47,7 @@ const featureList: FeaturesProps[] = [
   },
 ];
 
-export const FeaturesSection = () => {
+export default function FeaturesSection () {
   return (
     <section id="features" className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">

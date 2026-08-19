@@ -78,7 +78,7 @@ export const Navbar = () => {
           alt="OtiPay logo"
           width={44}
           height={44}
-          className="rounded-lg"
+          className="rounded-lg w-auto h-auto"
         />
         OTPay
       </Link>
@@ -105,7 +105,7 @@ export const Navbar = () => {
                       alt="OtiPay logo"
                       width={44}
                       height={44}
-                      className="rounded-lg"
+                      className="rounded-lg w-auto h-auto"
                     />
                     OTPay
                   </Link>
@@ -155,7 +155,7 @@ export const Navbar = () => {
                 <div className="relative h-full w-full rounded-md overflow-hidden">
                   <Image
                     src="/lady.jpg"
-                    alt="OtiPay logo"
+                    alt="Lady Image"
                     fill
                     className="object-cover"
                   />

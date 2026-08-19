@@ -3,7 +3,7 @@ import { Apple, PlayCircle, QrCode } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-export const DownloadSection = () => {
+export default function DownloadSection () {
   return (
     <section id="download" className="container py-24 sm:py-32">
       <div className="relative overflow-hidden rounded-3xl bg-brand-ink px-8 py-16 text-white md:px-16">

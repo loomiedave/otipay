@@ -33,7 +33,7 @@ const stepList: StepProps[] = [
   },
 ];
 
-export const ServicesSection = () => {
+export default function ServicesSection () {
   return (
     <section id="services" className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">

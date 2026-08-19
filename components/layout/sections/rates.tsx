@@ -34,7 +34,7 @@ function calculateFee(amount: number) {
   return +(amount * 0.012).toFixed(2);
 }
 
-export const RatesSection = () => {
+export default function RatesSection (){
   const [amount, setAmount] = useState<string>("200");
   const [corridorCode, setCorridorCode] = useState<string>("NG");
 

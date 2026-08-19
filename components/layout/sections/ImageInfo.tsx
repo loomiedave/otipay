@@ -20,7 +20,7 @@ const moments: Moment[] = [
   },
 ];
 
-export const ImageInfoSection = () => {
+export default function ImageInfoSection () {
   return (
     <section id="info" className="container py-24 sm:py-32">
       <div className="text-center max-w-2xl mx-auto mb-12">

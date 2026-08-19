@@ -1,14 +1,14 @@
-import { BenefitsSection } from "@/components/layout/sections/benefits";
-import { ContactSection } from "@/components/layout/sections/contact";
-import { DownloadSection } from "@/components/layout/sections/download";
-import { FAQSection } from "@/components/layout/sections/faq";
-import { FeaturesSection } from "@/components/layout/sections/features";
-import { FooterSection } from "@/components/layout/sections/footer";
-import { HeroSection } from "@/components/layout/sections/hero";
-import { ImageInfoSection } from "@/components/layout/sections/ImageInfo";
-import { RatesSection } from "@/components/layout/sections/rates";
-import { ServicesSection } from "@/components/layout/sections/services";
-import { SponsorsSection } from "@/components/layout/sections/sponsors";
+import  BenefitsSection from "@/components/layout/sections/benefits";
+import  ContactSection  from "@/components/layout/sections/contact";
+import  DownloadSection  from "@/components/layout/sections/download";
+import  FAQSection  from "@/components/layout/sections/faq";
+import  FeaturesSection  from "@/components/layout/sections/features";
+import  FooterSection  from "@/components/layout/sections/footer";
+import  HeroSection from "@/components/layout/sections/hero";
+import  ImageInfoSection  from "@/components/layout/sections/ImageInfo";
+import  RatesSection  from "@/components/layout/sections/rates";
+import  ServicesSection  from "@/components/layout/sections/services";
+import  SponsorsSection  from "@/components/layout/sections/sponsors";
 
 export const metadata = {
   title: "OtPay",

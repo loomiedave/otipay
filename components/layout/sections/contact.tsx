@@ -36,7 +36,7 @@ const formSchema = z.object({
   message: z.string(),
 });
 
-export const ContactSection = () => {
+export default function ContactSection() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
