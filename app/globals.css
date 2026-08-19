@@ -1,65 +1,102 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 html {
   scroll-behavior: smooth;
 }
-/* =========== Coral fintech theme =========== */
+
+/* =========== OTPAY Blue & Cyan Fintech Theme =========== */
 @layer base {
   :root {
-    --background: 20 30% 98%;
-    --foreground: 20 30% 12%;
+    --background: 210 40% 98%;
+    --foreground: 225 45% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 20 30% 12%;
+    --card-foreground: 225 45% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 20 30% 12%;
-    --primary: 14 78% 52%;
+    --popover-foreground: 225 45% 10%;
+
+    /* Primary = OTPAY deep blue */
+    --primary: 225 81% 40%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 20 40% 95%;
-    --secondary-foreground: 20 30% 15%;
-    --muted: 20 20% 95%;
-    --muted-foreground: 20 10% 42%;
-    --accent: 20 65% 91%;
-    --accent-foreground: 14 65% 28%;
+
+    /* Secondary = very light blue */
+    --secondary: 210 45% 95%;
+    --secondary-foreground: 225 60% 18%;
+
+    --muted: 210 30% 95%;
+    --muted-foreground: 220 15% 42%;
+
+    /* Accent = OTPAY cyan */
+    --accent: 191 75% 91%;
+    --accent-foreground: 225 75% 30%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 20 15% 88%;
-    --input: 20 15% 88%;
-    --ring: 14 78% 52%;
+
+    --border: 215 25% 88%;
+    --input: 215 25% 88%;
+
+    /* Focus/ring uses the main OTPAY blue */
+    --ring: 225 81% 40%;
     --radius: 0.75rem;
-    /* Fixed brand accents — constant regardless of light/dark mode */
-    --brand-ink: 20 35% 12%;
-    --brand-gold: 42 96% 56%;
-    --brand-coral: 14 78% 52%;
+
+    /* Fixed OTPAY brand accents — stay dark/constant in both modes,
+       used for signature panels (hero corridor card, download banner,
+       pricing calculator result box) */
+    --brand-ink: 225 65% 15%;
+    --brand-blue: 225 81% 40%;
+    --brand-cyan: 191 75% 50%;
+    --brand-coral: 12 85% 60%;
+    --brand-gold: 38 92% 58%;
   }
+
   .dark {
-    --background: 20 25% 7%;
-    --foreground: 20 25% 96%;
-    --card: 20 22% 11%;
-    --card-foreground: 20 25% 96%;
-    --popover: 20 22% 11%;
-    --popover-foreground: 20 25% 96%;
-    --primary: 14 82% 58%;
-    --primary-foreground: 20 30% 8%;
-    --secondary: 20 18% 16%;
-    --secondary-foreground: 20 25% 96%;
-    --muted: 20 15% 16%;
-    --muted-foreground: 20 10% 65%;
-    --accent: 14 45% 20%;
-    --accent-foreground: 14 75% 82%;
+    --background: 225 45% 7%;
+    --foreground: 210 40% 97%;
+    --card: 225 40% 11%;
+    --card-foreground: 210 40% 97%;
+    --popover: 225 40% 11%;
+    --popover-foreground: 210 40% 97%;
+
+    /* Brighter blue for dark mode */
+    --primary: 225 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 225 25% 16%;
+    --secondary-foreground: 210 40% 97%;
+
+    --muted: 225 20% 16%;
+    --muted-foreground: 215 15% 65%;
+
+    /* Cyan accent */
+    --accent: 191 55% 20%;
+    --accent-foreground: 191 80% 80%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 15% 18%;
-    --input: 20 15% 18%;
-    --ring: 14 82% 58%;
+
+    --border: 225 20% 19%;
+    --input: 225 20% 19%;
+    --ring: 191 75% 50%;
+
+    /* Kept fixed/dark — do NOT invert to a light value here, these
+       are meant to stay constant regardless of theme */
+    --brand-ink: 225 65% 12%;
+    --brand-blue: 225 85% 55%;
+    --brand-cyan: 191 75% 50%;
+    --brand-coral: 12 85% 60%;
+    --brand-gold: 38 92% 58%;
   }
 }
+
 .shadow-light {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.085);
+  box-shadow: inset 0 0 5px rgba(18, 57, 184, 0.085);
 }
 .shadow-dark {
-  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.141);
+  box-shadow: inset 0 0 5px rgba(32, 185, 224, 0.141);
 }
+
 @layer base {
   * {
     @apply border-border;
@@ -73,12 +110,47 @@ html {
   from {
     transform: translateX(0);
   }
-
   to {
     transform: translateX(-50%);
   }
 }
-
 .animate-sponsors-marquee {
   animation: sponsors-marquee 25s linear infinite;
+}
+
+
+@keyframes travel {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  50% {
+    left: 50%;
+  }
+  92% {
+    left: 100%;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corridor-dot {
+    animation: none !important;
+    left: 100%;
+  }
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+  display: none;
 }

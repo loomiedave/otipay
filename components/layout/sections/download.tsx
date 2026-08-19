@@ -5,8 +5,8 @@ import Image from "next/image";
 
 export default function DownloadSection () {
   return (
-    <section id="download" className="container py-24 sm:py-32">
-      <div className="relative overflow-hidden rounded-3xl bg-brand-ink px-8 py-16 text-white md:px-16">
+    <section id="download" className=" py-24 sm:py-32">
+      <div className="relative overflow-hidden bg-brand-ink px-8 py-16 text-white md:px-16">
         <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-brand-gold/20 blur-3xl" />
         <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-brand-coral/20 blur-3xl" />
 
@@ -18,9 +18,10 @@ export default function DownloadSection () {
             <h2 className="text-3xl md:text-4xl font-bold max-w-lg">
               Your Next Transfer Is One Tap Away
             </h2>
+
             <p className="text-lg text-white/70 max-w-md">
-              Download OtiPay and send money to Togo, Nigeria, Benin, and
-              Ghana in minutes — right from your phone.
+              Download OTPay and send money to Togo, Nigeria, Benin, and
+              Ghana in minutes, right from your phone.
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
@@ -49,10 +50,10 @@ export default function DownloadSection () {
 
           <div className="flex justify-center lg:justify-end">
             <div className="flex items-center gap-4 rounded-2xl bg-white/5 p-5 backdrop-blur-sm">
-              <div className="flex size-24 items-center justify-center rounded-xl bg-white">
+              <div className="flex size-24 items-center justify-center  bg-white">
                 {/* Replace with a real QR code pointing to your app/download link */}
                 <Image
-                  src="/otipay-qr.png"
+                  src="/qr.png"
                   alt="Scan to download OtiPay"
                   width={96}
                   height={96}

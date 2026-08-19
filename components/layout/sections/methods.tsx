@@ -3,12 +3,12 @@
 import { Icon } from "@/components/ui/icon";
 import { icons } from "lucide-react";
 
-interface SponsorsProps {
+interface MethodsProps {
   icon: string;
   name: string;
 }
 
-const sponsors: SponsorsProps[] = [
+const methods: MethodsProps[] = [
   { icon: "Smartphone", name: "MTN Mobile Money" },
   { icon: "Wallet", name: "Moov Money" },
   { icon: "Landmark", name: "Bank Transfer" },
@@ -17,7 +17,7 @@ const sponsors: SponsorsProps[] = [
   { icon: "ShieldCheck", name: "Licensed Money Transmitter" },
 ];
 
-export default function SponsorsSection () {
+export default function MethodsSection () {
   return (
     <section id="sponsors" className="max-w-[75%] mx-auto pb-24 sm:pb-32">
       <h2 className="text-lg md:text-xl text-center mb-6">
@@ -30,7 +30,7 @@ export default function SponsorsSection () {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent" />
 
         <div className="flex w-max animate-sponsors-marquee hover:[animation-play-state:paused]">
-          {[...sponsors, ...sponsors].map(({ icon, name }, index) => (
+          {[...methods, ...methods].map(({ icon, name }, index) => (
             <div
               key={`${name}-${index}`}
               className="flex items-center text-xl md:text-2xl font-medium mr-[3rem]"

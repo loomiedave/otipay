@@ -61,7 +61,7 @@ export default function RatesSection (){
         before you send.
       </h3>
 
-      <Card className="max-w-2xl mx-auto border-primary/20">
+      <Card className="max-w-auto mx-auto border-primary/20">
         <CardHeader>
           <CardTitle className="text-base font-medium text-muted-foreground">
             Transfer calculator

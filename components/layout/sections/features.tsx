@@ -25,7 +25,7 @@ const featureList: FeaturesProps[] = [
     icon: "RotateCcwClock",
     title: "Full Transaction History",
     description:
-      "Every transfer, rate, and fee logged and searchable — download statements anytime.",
+      "Every transfer, rate, and fee logged and searchable to download anytime.",
   },
   {
     icon: "FingerprintPattern",
@@ -37,51 +37,47 @@ const featureList: FeaturesProps[] = [
     icon: "BellRing",
     title: "Instant Notifications",
     description:
-      "Get notified the moment a transfer is sent, confirmed, or received — no guessing.",
+      "Get notified the immediately a transfer is sent, confirmed, or received .",
   },
   {
     icon: "MessageCircle",
     title: "In-App Support",
     description:
-      "Reach a real person in the app if a transfer needs help — no separate hotline to find.",
+      "Reach a real person in the app if a transfer needs help , we have 24/7 customer service",
   },
 ];
 
-export default function FeaturesSection () {
+export default function FeaturesSection() {
   return (
     <section id="features" className="container py-24 sm:py-32">
-      <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
-        Features
-      </h2>
-      <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        Everything You Need, In One App
-      </h2>
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8">
-        OtiPay is built to make sending money across borders feel as easy as
-        texting a friend.
-      </h3>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featureList.map(({ icon, title, description }) => (
-          <div key={title}>
-            <Card className="h-full bg-background border-0 shadow-none">
-              <CardHeader className="flex justify-center items-center">
-                <div className="bg-primary/20 p-2 rounded-full ring-8 ring-primary/10 mb-4">
-                  <Icon
-                    name={icon as keyof typeof icons}
-                    size={24}
-                    color="hsl(var(--primary))"
-                    className="text-primary"
-                  />
-                </div>
-                <CardTitle>{title}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-muted-foreground text-center">
-                {description}
-              </CardContent>
-            </Card>
+      <div className="max-w-2xl mb-16">
+        <p className="text-sm font-medium text-primary mb-3 tracking-wide">
+          Features
+        </p>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+          Everything you need, in one app
+        </h2>
+        <p className="text-lg text-muted-foreground">
+          OtiPay is built to make sending money across borders feel as easy
+          as texting a friend.
+        </p>
+      </div>
+
+      <div className="border-t border-border">
+        {featureList.map(({ title, description }, i) => (
+          <div
+            key={title}
+            className="grid sm:grid-cols-[240px_1fr] gap-2 sm:gap-8 py-6 border-b border-border"
+          >
+            <h3 className="font-semibold text-foreground">
+              {title}
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              {description}
+            </p>
           </div>
         ))}
       </div>
     </section>
   );
-};
+}

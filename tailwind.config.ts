@@ -29,8 +29,10 @@ module.exports = {
         foreground: "hsl(var(--foreground))",
         brand: {
           ink: "hsl(var(--brand-ink) / <alpha-value>)",
-          gold: "hsl(var(--brand-gold) / <alpha-value>)",
+          blue: "hsl(var(--brand-blue) / <alpha-value>)",
+          cyan: "hsl(var(--brand-cyan) / <alpha-value>)",
           coral: "hsl(var(--brand-coral) / <alpha-value>)",
+          gold: "hsl(var(--brand-gold) / <alpha-value>)",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

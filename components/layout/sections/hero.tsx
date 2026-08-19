@@ -17,9 +17,20 @@ const corridor = [
   { code: "GH", city: "Lagos" },
 ];
 
-export default function HeroSection (){
+export default function HeroSection() {
   return (
     <section className="relative overflow-hidden">
+      {/* Inject keyframes directly into document head */}
+      <style>{`
+        @keyframes travel {
+          0% { left: 0%; opacity: 0; }
+          8% { opacity: 1; }
+          50% { left: 50%; }
+          92% { left: 100%; opacity: 1; }
+          100% { left: 100%; opacity: 0; }
+        }
+      `}</style>
+
       <div className="container relative grid gap-16 py-20 md:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         {/* Left: copy */}
         <div className="relative z-10 space-y-8">
@@ -36,7 +47,7 @@ export default function HeroSection (){
           </h1>
 
           <p className="max-w-md text-lg text-muted-foreground">
-            OtiPay moves money across West Africa in minutes — straight to
+            OTPay moves money across West Africa in minutes, straight to
             mobile money, a bank account, or paid by card. No branch visits,
             no waiting.
           </p>
@@ -72,7 +83,6 @@ export default function HeroSection (){
 
         {/* Right: photo + signature corridor visual */}
         <div className="relative z-10">
-          {/* Photo, offset behind the card */}
           <div className="relative mx-auto aspect-[4/5] px-95%] overflow-hidden rounded-[1rem] shadow-xl">
             <Image
               src="/heroimg.jpg"
@@ -85,23 +95,8 @@ export default function HeroSection (){
             <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/40 via-transparent to-transparent" />
           </div>
 
-          {/* Floating trust card, overlapping bottom-left of photo */}
-          <div className="absolute -bottom-4 -left-4 z-20 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg md:-left-8">
-            <div className="flex -space-x-2">
-              <div className="size-8 rounded-full border-2 border-white bg-accent" />
-              <div className="size-8 rounded-full border-2 border-white bg-brand-gold/60" />
-              <div className="size-8 rounded-full border-2 border-white bg-brand-coral/60" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold leading-tight">1,000+</p>
-              <p className="text-xs text-muted-foreground leading-tight">
-                over active customers
-              </p>
-            </div>
-          </div>
-
-          {/* Corridor / rate card, overlapping top-right of photo */}
-          <div className="absolute -top-6 -right-2 z-20 w-[78%] rounded-3xl bg-brand-ink p-6 text-white shadow-2xl md:-right-6 md:w-[70%]">
+          {/* Corridor / rate card */}
+          <div className="absolute -bottom-4 -left-4 z-20 w-[78%] rounded-3xl bg-brand-ink p-6 text-white shadow-2xl md:-right-6 md:w-[70%]">
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
               Transfer route
             </p>
@@ -119,7 +114,12 @@ export default function HeroSection (){
                   <span className="text-[10px] text-white/60">{stop.city}</span>
                 </div>
               ))}
-              <div className="corridor-dot absolute top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-brand-coral shadow-[0_0_12px_2px_hsl(var(--brand-coral)/60%)]" />
+
+              {/* Animated Dot */}
+              <div
+                className="absolute top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-brand-coral shadow-[0_0_12px_2px_hsl(var(--brand-coral)/60%)]"
+                style={{ animation: "travel 6s ease-in-out infinite" }}
+              />
             </div>
 
             <div className="mt-6 flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
@@ -139,42 +139,25 @@ export default function HeroSection (){
             </div>
           </div>
 
+          {/* Floating trust card */}
+          <div className="absolute -top-6 -right-2 z-20 flex items-center gap-3 rounded-2xl bg-white/95 backdrop-blur-md px-4 py-3 shadow-xl ring-1 ring-black/5 md:-right-8">
+            <div className="flex -space-x-2">
+              <div className="size-8 rounded-full ring-2 ring-white bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-sm" />
+              <div className="size-8 rounded-full ring-2 ring-white bg-gradient-to-tr from-amber-400 to-orange-500 shadow-sm" />
+              <div className="size-8 rounded-full ring-2 ring-white bg-gradient-to-tr from-rose-500 to-pink-500 shadow-sm" />
+            </div>
+            <div>
+              <p className="text-sm font-bold leading-tight text-gray-900">1,000+</p>
+              <p className="text-xs font-medium leading-tight text-gray-500">
+                active customers
+              </p>
+            </div>
+          </div>
+
           <div className="absolute -bottom-6 -left-6 -z-10 h-40 w-40 rounded-full bg-brand-gold/30 blur-3xl" />
           <div className="absolute -top-6 -right-6 -z-10 h-40 w-40 rounded-full bg-brand-coral/20 blur-3xl" />
         </div>
       </div>
-
-      <style jsx>{`
-        .corridor-dot {
-          animation: travel 6s ease-in-out infinite;
-        }
-        @keyframes travel {
-          0% {
-            left: 0%;
-            opacity: 0;
-          }
-          8% {
-            opacity: 1;
-          }
-          50% {
-            left: 50%;
-          }
-          92% {
-            left: 100%;
-            opacity: 1;
-          }
-          100% {
-            left: 100%;
-            opacity: 0;
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .corridor-dot {
-            animation: none;
-            left: 100%;
-          }
-        }
-      `}</style>
     </section>
   );
-};
+}

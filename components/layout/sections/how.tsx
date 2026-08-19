@@ -33,7 +33,7 @@ const stepList: StepProps[] = [
   },
 ];
 
-export default function ServicesSection () {
+export default function HowSection () {
   return (
     <section id="services" className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
@@ -43,7 +43,7 @@ export default function ServicesSection () {
         Four Steps to Sent
       </h2>
       <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8">
-        No branch visits, no paperwork — just open the app and send.
+        No branch visits, no paperwork, just open the app and send.
       </h3>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stepList.map(({ step, title, description }) => (
