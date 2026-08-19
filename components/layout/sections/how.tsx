@@ -11,7 +11,7 @@ const stepList: StepProps[] = [
     step: "01",
     title: "Enter the Amount",
     description:
-      "Choose how much to send and where it's going — Togo, Nigeria, Benin, or Ghana.",
+      "Choose how much to send and where it's going, Togo, Nigeria, Benin, or Ghana.",
   },
   {
     step: "02",
