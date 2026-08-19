@@ -9,6 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "OTPAY",
   description: "Transfer Securely",
+  icons: {
+    icon: [
+      { url: "/otpay-logo.png", sizes: "any" },
+    ],
+  },
 };
 
 export default function RootLayout({

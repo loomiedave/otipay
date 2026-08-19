@@ -11,10 +11,10 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 const corridor = [
-  { code: "TG", city: "Accra" },
-  { code: "NG", city: "Lomé" },
-  { code: "BJ", city: "Cotonou" },
-  { code: "GH", city: "Lagos" },
+  { code: "Gh", city: "Ghana" },
+  { code: "TG", city: "Togo" },
+  { code: "BR", city: "Benin" },
+  { code: "NG", city: "Nigeria" },
 ];
 
 export default function HeroSection() {
@@ -133,7 +133,7 @@ export default function HeroSection() {
               <div className="text-right">
                 <p className="text-[11px] text-white/50">They receive</p>
                 <p className={`${spaceGrotesk.className} text-lg font-semibold text-brand-gold`}>
-                  ₦ 148,300
+                  ₦ 24,325.6
                 </p>
               </div>
             </div>

@@ -28,25 +28,33 @@ const corridors: Corridor[] = [
   { code: "BJ", country: "Benin", currency: "XOF", symbol: "F CFA", rate: 610 },
 ];
 
-function calculateFee(amount: number) {
-  if (amount <= 0) return 0;
-  if (amount < 100) return 1.5;
-  return +(amount * 0.012).toFixed(2);
+function calculateFee(amountUsd: number) {
+  if (amountUsd <= 0) return 0;
+  if (amountUsd < 100) return 1.5;
+  return +(amountUsd * 0.012).toFixed(2);
 }
 
-export default function RatesSection (){
-  const [amount, setAmount] = useState<string>("200");
-  const [corridorCode, setCorridorCode] = useState<string>("NG");
+export default function RatesSection() {
+  const [amount, setAmount] = useState<string>("50000");
+  const [fromCode, setFromCode] = useState<string>("TG");
+  const [toCode, setToCode] = useState<string>("NG");
 
-  const corridor = corridors.find((c) => c.code === corridorCode)!;
+  const fromCorridor = corridors.find((c) => c.code === fromCode)!;
+  const toCorridor = corridors.find((c) => c.code === toCode)!;
   const numericAmount = Number(amount) || 0;
 
-  const fee = useMemo(() => calculateFee(numericAmount), [numericAmount]);
-  const received = useMemo(() => {
-    const net = Math.max(numericAmount - fee, 0);
-    return net * corridor.rate;
-  }, [numericAmount, fee, corridor.rate]);
+  const amountUsd = useMemo(
+    () => numericAmount / fromCorridor.rate,
+    [numericAmount, fromCorridor.rate]
+  );
 
+  const feeUsd = useMemo(() => calculateFee(amountUsd), [amountUsd]);
+  const feeInFromCurrency = feeUsd * fromCorridor.rate;
+
+  const received = useMemo(() => {
+    const netUsd = Math.max(amountUsd - feeUsd, 0);
+    return netUsd * toCorridor.rate;
+  }, [amountUsd, feeUsd, toCorridor.rate]);
 
   return (
     <section id="rates" className="container py-6 sm:py-6">
@@ -71,21 +79,26 @@ export default function RatesSection (){
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm text-muted-foreground">
-                You send (USD)
+                Sending from
               </label>
-              <Input
-                type="number"
-                min={1}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="text-lg font-semibold"
-              />
+              <Select value={fromCode} onValueChange={setFromCode}>
+                <SelectTrigger className="text-lg font-semibold">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {corridors.map((c) => (
+                    <SelectItem key={c.code} value={c.code}>
+                      {c.country} ({c.currency})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <label className="text-sm text-muted-foreground">
-                Recipient country
+                Sending to
               </label>
-              <Select value={corridorCode} onValueChange={setCorridorCode}>
+              <Select value={toCode} onValueChange={setToCode}>
                 <SelectTrigger className="text-lg font-semibold">
                   <SelectValue />
                 </SelectTrigger>
@@ -100,15 +113,30 @@ export default function RatesSection (){
             </div>
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm text-muted-foreground">
+              Amount ({fromCorridor.currency})
+            </label>
+            <Input
+              type="number"
+              min={1}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="text-lg font-semibold"
+            />
+          </div>
+
           <div className="rounded-2xl bg-brand-ink p-6 text-white">
             <div className="flex items-center justify-between text-sm text-white/60 mb-2">
               <span>Our fee</span>
-              <span>${fee.toFixed(2)}</span>
+              <span>
+                {fromCorridor.symbol} {feeInFromCurrency.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-white/60">They receive</span>
               <span className="text-2xl font-bold text-brand-gold">
-                {corridor.symbol}{" "}
+                {toCorridor.symbol}{" "}
                 {received.toLocaleString(undefined, {
                   maximumFractionDigits: 0,
                 })}
@@ -132,4 +160,4 @@ export default function RatesSection (){
       </Card>
     </section>
   );
-};
+}

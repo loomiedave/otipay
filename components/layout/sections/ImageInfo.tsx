@@ -8,15 +8,15 @@ interface Moment {
 const moments: Moment[] = [
   {
     image: "/twoladies.jpg",
-    location: "Accra - Lome",
+    location: "Ghana - Togo",
   },
   {
     image: "/blackguy.jpg",
-    location: "Lagos - Cotonou",
+    location: "Nigeria - Benin Republic",
   },
   {
     image: "/vam.jpg",
-    location: "Accra - Lagos ",
+    location: "Ghana - Nigeria ",
   },
 ];
 
@@ -28,7 +28,7 @@ export default function ImageInfoSection () {
           Reliable Transactions
         </h2>
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Every Transfer Reaches Someone
+          Every Transfer is Successful
         </h2>
         <p className="text-xl text-muted-foreground">
           Hundreds of families and businesses across West Africa trust
