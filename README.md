@@ -1,56 +1,16 @@
-# Shadcn Landing Page Template
+What's built and why:
+ - Live, admin-controlled exchange rates — rates aren't hardcoded in the app; they live in the database and update on every user's phone in real time the moment an admin changes them. This is the foundation the whole product depends on, so it was built first.
+ - 
+ - Rate locked at transfer time — protects the sender from rate changes mid-transaction. Standard practice in remittance, non-negotiable to skip.
+ - 
+ - Per-corridor fees, independent of rate — because Togo and Benin share a currency but can have different business costs/margins per corridor.
+ - 
+ - Role-based admin access via the same auth system as the app — no separate identity system to maintain, one source of truth for "who's allowed to do what."
 
-## <a href="https://ui.shadcn.com/" target="_blank">Shadcn</a> + <a href="https://nextjs.org/" target="_blank">Next.js</a> + <a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a> + <a href="https://tailwindcss.com/" target="_blank">Tailwind</a>.
-
-### This is a project conversion <a href="https://github.com/leoMirandaa/shadcn-vue-landing-page" target="_blank">Shadcn-Vue</a> to NextJS
-
-![Alt text](./public/demo-img.jpg)
-
-## Sections
-
-- [x] Navbar
-- [x] Sidebar(mobile)
-- [x] Hero
-- [x] Sponsors
-- [x] Benefits
-- [x] Features
-- [x] Testimonials
-- [x] Team
-- [x] Community
-- [x] Contact
-- [x] L
-- [x] Frequently Asked Questions(FAQ)
-- [x] Services
-- [x] Footer
-
-## Features
-
-- [x] Fully Responsive Design
-- [x] User Friendly Navigation
-- [x] Dark Mode
-
-## How to install
-
-1. Clone this repositoy:
-
-```bash
-git clone https://github.com/nobruf/shadcn-landing-page.git
-```
-
-2. Go into project
-
-```bash
-cd shadcn-landing-page
-```
-
-3. Install dependencies
-
-```bash
-npm install
-```
-
-4. Run project
-
-```bash
-npm run dev
-```
+ 
+What's intentionally not built yet, and why:
+ - Transfers/Users admin screens — visible in the nav as "coming soon" on purpose, to show the roadmap, not hide it. Rates had to work first because every other feature (sending money, showing history) depends on rates existing and being trustworthy.
+ - 
+ - Wallet balances — deliberately excluded. This is a pure transfer model (pay in, recipient collects), which is simpler to build, simpler to reason about for compliance, and matches what an MVP needs to prove the concept.
+ - 
+ - Rate history / trend charts — not built because there's no real historical data yet to show; wasn't worth faking a chart with placeholder numbers.
