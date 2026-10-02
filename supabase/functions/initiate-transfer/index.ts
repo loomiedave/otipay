@@ -48,8 +48,8 @@ Deno.serve(async (req: Request) => {
   try {
     if (fromCountry === "GH") {
       await initiateMtnCollection(transfer.id, amountSent, payerPhone);
-    } else if (fromCountry === "TG") {
-      await initiateCinetPayCollection(transfer.id, amountSent, payerPhone, network);
+    }  else if (fromCountry === "TG") {
+      await initiatePayDunyaCollection(transfer.id, amountSent, payerPhone, network);
     } else {
       throw new Error(`No collection integration for from_country=${fromCountry}`);
     }
@@ -106,39 +106,51 @@ async function initiateMtnCollection(transferId: string, amount: number, payerPh
   await supabase.from("transfers").update({ collection_reference: referenceId }).eq("id", transferId);
 }
 
-async function initiateCinetPayCollection(transferId: string, amount: number, payerPhone: string, network: string) {
-  // ⚠️ Best-effort against confirmed docs — the exact push-vs-redirect behavior
-  // needs a one-time real test once you have live credentials. If this
-  // returns a payment_url instead of pushing directly, you'll need a WebView
-  // step here instead of a pure API push — flag it back to me if so.
-  const apikey = Deno.env.get("CINETPAY_APIKEY")!;
-  const siteId = Deno.env.get("CINETPAY_SITE_ID")!;
-  const notifyUrl = Deno.env.get("CINETPAY_NOTIFY_URL")!;
+async function initiatePayDunyaCollection(transferId: string, amount: number, payerPhone: string, network: string) {
+  const headers = {
+    "Content-Type": "application/json",
+    "PAYDUNYA-MASTER-KEY": Deno.env.get("PAYDUNYA_MASTER_KEY")!,
+    "PAYDUNYA-PRIVATE-KEY": Deno.env.get("PAYDUNYA_PRIVATE_KEY")!,
+    "PAYDUNYA-TOKEN": Deno.env.get("PAYDUNYA_TOKEN")!,
+  };
 
-  const paymentMethod = network === "flooz" ? "FLOOZTG" : "TmoneyTG";
-
-  const res = await fetch("https://api-checkout.cinetpay.com/v2/payment", {
+  // Step 1: create the invoice
+  const invoiceRes = await fetch("https://app.paydunya.com/api/v1/checkout-invoice/create", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({
-      apikey,
-      site_id: siteId,
-      transaction_id: transferId,
-      amount,
-      currency: "XOF",
-      description: "OtiPay transfer",
-      notify_url: notifyUrl,
-      channels: "MOBILE_MONEY",
-      customer_phone_number: payerPhone,
-      lock_phone_number: true,
-      payment_method: paymentMethod,
+      invoice: { total_amount: amount, description: "OtiPay transfer" },
+      store: { name: "OtiPay" },
     }),
   });
+  const invoiceData = await invoiceRes.json();
+  if (invoiceData.response_code !== "00") {
+    throw new Error(`PayDunya invoice creation failed: ${JSON.stringify(invoiceData)}`);
+  }
+  const invoiceToken = invoiceData.token;
 
-  const data = await res.json();
-  if (data.code !== "201" && data.code !== 201) {
-    throw new Error(`CinetPay init failed: ${JSON.stringify(data)}`);
+  // Step 2: push to the specific wallet
+  // ⚠️ CONFIRM: "moov-togo" is the confirmed disbursement withdraw_mode slug,
+  // but I haven't seen the matching SOFTPAY endpoint for Flooz explicitly —
+  // only t-money-togo is confirmed at /api/v1/softpay/t-money-togo.
+  // Test the Flooz side first before trusting this path blindly.
+  const softpayPath = network === "flooz" ? "moov-togo" : "t-money-togo";
+
+  const payRes = await fetch(`https://app.paydunya.com/api/v1/softpay/${softpayPath}`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      t_money_phone_number: payerPhone, // field name confirmed for t-money; verify for moov-togo once tested
+      invoice_token: invoiceToken,
+      customer_name: "OtiPay Customer",
+      customer_email: "noreply@otipay.app", // placeholder — PayDunya may require a real-looking one
+    }),
+  });
+  const payData = await payRes.json();
+  if (payData.response_code !== "00") {
+    throw new Error(`PayDunya softpay push failed: ${JSON.stringify(payData)}`);
   }
 
-  await supabase.from("transfers").update({ collection_reference: transferId }).eq("id", transferId);
+  await supabase.from("transfers").update({ collection_reference: invoiceToken }).eq("id", transferId);
+  return invoiceToken;
 }
