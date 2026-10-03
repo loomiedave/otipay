@@ -86,6 +86,7 @@ async function initiateMtnCollection(transferId: string, amount: number, payerPh
     headers: {
       Authorization: `Bearer ${access_token}`,
       "X-Reference-Id": referenceId,
+      "X-Callback-Url": `${SUPABASE_URL}/functions/v1/payment-webhook`,
       "X-Target-Environment": Deno.env.get("MTN_MOMO_TARGET_ENV") ?? "sandbox",
       "Ocp-Apim-Subscription-Key": subKey,
       "Content-Type": "application/json",

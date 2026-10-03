@@ -11,15 +11,19 @@ Deno.serve(async (req: Request) => {
   if (contentType.includes("json")) {
     // MTN shape
     const body = await req.json();
-    const referenceId = body.referenceId ?? body.externalId;
-    if (!referenceId) return new Response("OK", { status: 200 });
-
-    const status = await getMtnStatus(referenceId);
-    const verifiedSuccess = status.status === "SUCCESSFUL";
-    const transferId = status.externalId ?? null;
+    console.log("MTN WEBHOOK:", JSON.stringify(body));
+    const transferId = body.externalId;
     if (!transferId) return new Response("OK", { status: 200 });
 
-    await finalizeCollection(transferId, verifiedSuccess);
+    const { data: t } = await supabase
+      .from("transfers").select("collection_reference").eq("id", transferId).single();
+    if (!t?.collection_reference) return new Response("OK", { status: 200 });
+
+    const status = await getMtnStatus(t.collection_reference);
+    console.log("MTN STATUS:", JSON.stringify(status));
+    if (status.status === "PENDING") return new Response("OK", { status: 200 });
+
+    await finalizeCollection(transferId, status.status === "SUCCESSFUL");
     return new Response("OK", { status: 200 });
   }
 
