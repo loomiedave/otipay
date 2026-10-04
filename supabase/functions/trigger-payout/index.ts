@@ -15,6 +15,7 @@ Deno.serve(async (req: Request) => {
 
   let result;
   if (transfer.to_country === "GH") {
+    console.log("MTN PAYOUT RESULT:", JSON.stringify(result));
     result = await payoutMtnMomo(transfer);
   } else if (transfer.to_country === "TG") {
     result = await payoutPayDunya(transfer);

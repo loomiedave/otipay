@@ -48,8 +48,9 @@ Deno.serve(async (req: Request) => {
   try {
     if (fromCountry === "GH") {
       await initiateMtnCollection(transfer.id, amountSent, payerPhone);
-    }  else if (fromCountry === "TG") {
-      await initiatePayDunyaCollection(transfer.id, amountSent, payerPhone, network);
+    } else if (fromCountry === "TG") {
+      const checkoutUrl = await initiatePayDunyaCollection(transfer.id, amountSent);
+      return json({ transferId: transfer.id, checkoutUrl }); // early return, skips the generic one below
     } else {
       throw new Error(`No collection integration for from_country=${fromCountry}`);
     }
@@ -107,7 +108,8 @@ async function initiateMtnCollection(transferId: string, amount: number, payerPh
   await supabase.from("transfers").update({ collection_reference: referenceId }).eq("id", transferId);
 }
 
-async function initiatePayDunyaCollection(transferId: string, amount: number, payerPhone: string, network: string) {
+async function initiatePayDunyaCollection(transferId: string, amount: number) {
+  const base = Deno.env.get("PAYDUNYA_API_HOST") ?? "sandbox-api";
   const headers = {
     "Content-Type": "application/json",
     "PAYDUNYA-MASTER-KEY": Deno.env.get("PAYDUNYA_MASTER_KEY")!,
@@ -115,43 +117,20 @@ async function initiatePayDunyaCollection(transferId: string, amount: number, pa
     "PAYDUNYA-TOKEN": Deno.env.get("PAYDUNYA_TOKEN")!,
   };
 
-  // Step 1: create the invoice
-  const invoiceRes = await fetch("https://app.paydunya.com/api/v1/checkout-invoice/create", {
+  const invoiceRes = await fetch(`https://app.paydunya.com/${base}/v1/checkout-invoice/create`, {
     method: "POST",
     headers,
     body: JSON.stringify({
-      invoice: { total_amount: amount, description: "OtiPay transfer" },
-      store: { name: "OtiPay" },
+      invoice: { total_amount: Math.max(amount, 200), description: "OtiPay transfer" }, // 200 FCFA minimum, confirmed
+      store: { name: "OtPay" },
+      actions: { callback_url: `${SUPABASE_URL}/functions/v1/payment-webhook` },
     }),
   });
   const invoiceData = await invoiceRes.json();
   if (invoiceData.response_code !== "00") {
     throw new Error(`PayDunya invoice creation failed: ${JSON.stringify(invoiceData)}`);
   }
-  const invoiceToken = invoiceData.token;
 
-  // Step 2: push to the specific wallet
-  // ⚠️ CONFIRM: "moov-togo" is the confirmed disbursement withdraw_mode slug,
-  // but I haven't seen the matching SOFTPAY endpoint for Flooz explicitly —
-  // only t-money-togo is confirmed at /api/v1/softpay/t-money-togo.
-  // Test the Flooz side first before trusting this path blindly.
-  const softpayPath = network === "flooz" ? "moov-togo" : "t-money-togo";
-
-  const payRes = await fetch(`https://app.paydunya.com/api/v1/softpay/${softpayPath}`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      t_money_phone_number: payerPhone, // field name confirmed for t-money; verify for moov-togo once tested
-      invoice_token: invoiceToken,
-      customer_name: "OtiPay Customer",
-      customer_email: "noreply@otipay.app", // placeholder — PayDunya may require a real-looking one
-    }),
-  });
-  const payData = await payRes.json();
-  if (payData.response_code !== "00") {
-    throw new Error(`PayDunya softpay push failed: ${JSON.stringify(payData)}`);
-  }
-
-  await supabase.from("transfers").update({ collection_reference: invoiceToken }).eq("id", transferId);
-  return invoiceToken;
+  await supabase.from("transfers").update({ collection_reference: invoiceData.token }).eq("id", transferId);
+  return invoiceData.response_text; // this is the checkout URL — the WebView needs this
 }

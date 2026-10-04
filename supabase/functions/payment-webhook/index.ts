@@ -27,14 +27,33 @@ Deno.serve(async (req: Request) => {
     return new Response("OK", { status: 200 });
   }
 
-  // PayDunya is form-urlencoded — log raw shape first, don't parse blind
+  // PayDunya shape — form-urlencoded, bracket-notation keys, confirmed from a real test payload
   const form = await req.formData();
   const raw = Object.fromEntries(form.entries());
   console.log("RAW PAYDUNYA WEBHOOK:", JSON.stringify(raw));
-  // TODO: once you've seen one real payload in `supabase functions logs payment-webhook`,
-  // extract transferId + status from the real field names and call finalizeCollection()
-  // the same way the MTN branch does above.
 
+  const invoiceToken = form.get("data[invoice][token]")?.toString();
+  const reportedStatus = form.get("data[status]")?.toString(); // "completed" | "failed" | "cancelled"
+  if (!invoiceToken) return new Response("OK", { status: 200 });
+
+  // Don't trust the webhook body alone — re-verify against PayDunya directly,
+  // same principle as the MTN branch re-querying getMtnStatus.
+  const confirmed = await getPayDunyaStatus(invoiceToken);
+  console.log("PAYDUNYA CONFIRM STATUS:", JSON.stringify(confirmed));
+
+  // Look up the transfer by collection_reference, since PayDunya echoes back
+  // ITS OWN invoice token, not our transferId (unlike MTN's externalId).
+  const { data: transfer } = await supabase
+    .from("transfers")
+    .select("id")
+    .eq("collection_reference", invoiceToken)
+    .single();
+
+  if (!transfer) return new Response("OK", { status: 200 });
+
+  if (confirmed.status === "pending") return new Response("OK", { status: 200 });
+
+  await finalizeCollection(transfer.id, confirmed.status === "completed");
   return new Response("OK", { status: 200 });
 });
 
@@ -70,4 +89,17 @@ async function getMtnStatus(referenceId: string) {
     headers: { Authorization: `Bearer ${access_token}`, "X-Target-Environment": Deno.env.get("MTN_MOMO_TARGET_ENV") ?? "sandbox", "Ocp-Apim-Subscription-Key": subKey },
   });
   return res.json();
+}
+
+async function getPayDunyaStatus(invoiceToken: string) {
+  const base = Deno.env.get("PAYDUNYA_API_HOST") ?? "sandbox-api";
+  const res = await fetch(`https://app.paydunya.com/${base}/v1/checkout-invoice/confirm/${invoiceToken}`, {
+    headers: {
+      "PAYDUNYA-MASTER-KEY": Deno.env.get("PAYDUNYA_MASTER_KEY")!,
+      "PAYDUNYA-PRIVATE-KEY": Deno.env.get("PAYDUNYA_PRIVATE_KEY")!,
+      "PAYDUNYA-TOKEN": Deno.env.get("PAYDUNYA_TOKEN")!,
+    },
+  });
+  const data = await res.json();
+  return { status: data.status }; // "completed" | "pending" | "cancelled"
 }
