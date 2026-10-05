@@ -87,6 +87,12 @@ async function payoutMtnMomo(transfer: any) {
 }
 
 async function payoutPayDunya(transfer: any) {
+  if (Deno.env.get("PAYOUT_MODE") === "simulate") {
+    console.log(`SIMULATED PayDunya payout — transfer ${transfer.id}, ${transfer.amount_received} XOF to ${transfer.recipient_phone} (${transfer.network}). Real disbursement pending PayDunya KYC/activation.`);
+    await new Promise((r) => setTimeout(r, 1500)); // feels real rather than instant
+    return { success: true, reference: `SIMULATED-${crypto.randomUUID().slice(0, 8).toUpperCase()}` };
+  }
+  
   const headers = {
     "Content-Type": "application/json",
     "PAYDUNYA-MASTER-KEY": Deno.env.get("PAYDUNYA_MASTER_KEY")!,
